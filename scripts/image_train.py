@@ -14,7 +14,7 @@ from guided_diffusion.script_util import (
     add_dict_to_argparser,
 )
 from guided_diffusion.train_util import TrainLoop
-
+from guided_diffusion.my_dataset import myslicesloader
 
 def main():
     args = create_argparser().parse_args()
@@ -36,6 +36,21 @@ def main():
         image_size=args.image_size,
         class_cond=args.class_cond,
     )
+
+    dataset_path=args.dataset_path
+    train_volume_ds,_,train_loader,_,_ = myslicesloader(dataset_path,
+                    normalize='none',
+                    train_number=args.train_number,
+                    val_number=1,
+                    train_batch_size=args.batch_size,
+                    val_batch_size=1,
+                    saved_name_train='./train_ds_2d.csv',
+                    saved_name_val='./val_ds_2d.csv',
+                    resized_size=(args.image_size, args.image_size, None),
+                    div_size=(16,16,None),
+                    ifcheck_volume=False,
+                    ifcheck_sclices=False,)
+    dataloader=train_loader
 
     logger.log("training...")
     TrainLoop(

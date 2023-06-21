@@ -96,7 +96,7 @@ def create_argparser():
         num_samples=10000,
         batch_size=16,
         use_ddim=False,
-        model_path="",
+        model_path="F:\yang_Projects\guided-diffusion\ckpt\128x128_diffusion.pt",
     )
     defaults.update(model_and_diffusion_defaults())
     parser = argparse.ArgumentParser()
