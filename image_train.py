@@ -26,21 +26,23 @@ def main():
     model, diffusion = create_model_and_diffusion(
         **args_to_dict(args, model_and_diffusion_defaults().keys())
     )
-    model.to(dist_util.dev())
+    device = 'cuda:0'
+    model.to(device) #dist_util.dev()
     schedule_sampler = create_named_schedule_sampler(args.schedule_sampler, diffusion)
 
     logger.log("creating data loader...")
+    '''
     data = load_data(
         data_dir=args.data_dir,
         batch_size=args.batch_size,
         image_size=args.image_size,
         class_cond=args.class_cond,
-    )
+    )'''
 
-    dataset_path=args.dataset_path
+    dataset_path=args.data_dir
     train_volume_ds,_,train_loader,_,_ = myslicesloader(dataset_path,
                     normalize='none',
-                    train_number=args.train_number,
+                    train_number=1,
                     val_number=1,
                     train_batch_size=args.batch_size,
                     val_batch_size=1,
@@ -50,7 +52,7 @@ def main():
                     div_size=(16,16,None),
                     ifcheck_volume=False,
                     ifcheck_sclices=False,)
-    dataloader=train_loader
+    data=train_loader
 
     logger.log("training...")
     TrainLoop(

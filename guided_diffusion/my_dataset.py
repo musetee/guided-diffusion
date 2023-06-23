@@ -32,6 +32,13 @@ def get_file_list(data_pelvis_path, train_number, val_number):
     print('all files in dataset:',len(file_list))
     return train_ds, val_ds
 
+def get_image_basename(data_dir, train_number=10, val_number=1):
+    train_ds, val_ds = get_file_list(data_dir, train_number, val_number)
+    train_image_list = [i['image'] for i in train_ds]
+    train_image_basename_list = [os.path.basename(os.path.dirname(i)) for i in train_image_list]
+    print(train_image_basename_list)
+    return train_image_basename_list
+
 ##### slices #####
 def load_volumes(train_transforms, train_ds, val_ds, saved_name_train=None, saved_name_val=None,ifsave=False,ifcheck=False):
     train_volume_ds = monai.data.Dataset(data=train_ds, transform=train_transforms) 

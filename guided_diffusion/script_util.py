@@ -54,7 +54,7 @@ def model_and_diffusion_defaults():
         attention_resolutions="32,16,8",
         channel_mult="",
         dropout=0.0,
-        class_cond=True,
+        class_cond=False,
         use_checkpoint=False,
         use_scale_shift_norm=True,
         resblock_updown=True,
@@ -163,11 +163,12 @@ def create_model(
     for res in attention_resolutions.split(","):
         attention_ds.append(image_size // int(res))
 
+    image_channels = 1
     return UNetModel(
         image_size=image_size,
-        in_channels=3,
+        in_channels=image_channels,
         model_channels=num_channels,
-        out_channels=(3 if not learn_sigma else 6),
+        out_channels=(image_channels if not learn_sigma else 6),
         num_res_blocks=num_res_blocks,
         attention_resolutions=tuple(attention_ds),
         dropout=dropout,
@@ -252,7 +253,7 @@ def create_classifier(
 
     return EncoderUNetModel(
         image_size=image_size,
-        in_channels=3,
+        in_channels=1,
         model_channels=classifier_width,
         out_channels=1000,
         num_res_blocks=classifier_depth,
@@ -365,9 +366,9 @@ def sr_create_model(
 
     return SuperResModel(
         image_size=large_size,
-        in_channels=3,
+        in_channels=1,
         model_channels=num_channels,
-        out_channels=(3 if not learn_sigma else 6),
+        out_channels=(1 if not learn_sigma else 6),
         num_res_blocks=num_res_blocks,
         attention_resolutions=tuple(attention_ds),
         dropout=dropout,

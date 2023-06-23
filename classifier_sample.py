@@ -24,7 +24,10 @@ from guided_diffusion.script_util import (
 
 
 def main():
-    args = create_argparser().parse_args()
+    parser = create_argparser()
+    args = parser.parse_args()
+    parser_name="testparser.txt"
+    save_parser_elements(parser,parser_name)
 
     dist_util.setup_dist()
     logger.configure()
@@ -126,6 +129,18 @@ def create_argparser():
     add_dict_to_argparser(parser, defaults)
     return parser
 
+def save_parser_elements(parser, filename):
+    with open(filename, "w") as file:
+        file.write("Argument\tDefault Value\n")
+        for action in parser._actions:
+            if isinstance(action, argparse._StoreAction):
+                arg = action.dest
+                default = action.default
+                file.write(f"{arg}\t{default}\n")
 
 if __name__ == "__main__":
     main()
+    #parser = create_argparser()
+    #parser_name="testparser.txt"
+    #save_parser_elements(parser,parser_name)
+

@@ -96,7 +96,7 @@ def create_argparser():
         num_samples=10000,
         batch_size=16,
         use_ddim=False,
-        model_path=r"F:\yang_Projects\guided-diffusion\ckpt\128x128_diffusion.pt",
+        model_path="",
     )
     defaults.update(model_and_diffusion_defaults())
     parser = argparse.ArgumentParser()
@@ -106,8 +106,3 @@ def create_argparser():
 
 if __name__ == "__main__":
     main()
-    '''
-    SAMPLE_FLAGS="--batch_size 4 --num_samples 100 --timestep_respacing 250"
-    MODEL_FLAGS="--attention_resolutions 32,16,8 --class_cond True --diffusion_steps 1000 --image_size 128 --learn_sigma True --noise_schedule linear --num_channels 256 --num_heads 4 --num_res_blocks 2 --resblock_updown True --use_fp16 True --use_scale_shift_norm True"
-    python classifier_sample.py $MODEL_FLAGS --classifier_scale 0.5 --classifier_path ckpt/128x128_classifier.pt --model_path ckpt/128x128_diffusion.pt $SAMPLE_FLAGS   
-    '''
